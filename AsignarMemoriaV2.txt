@@ -1,0 +1,69 @@
+ALGORITMO AsignarMemoria(
+    inicio: Puntero a NodoProceso,
+    POR REFERENCIA tope: Puntero a NodoMemoria,
+    capacidad: Entero,
+    id: Entero
+)
+VARIABLES
+    proceso: Puntero a NodoProceso
+    actual, nuevo: Puntero a NodoMemoria
+    ocupada: Entero
+    encontrado, asignado: Lógico
+
+INICIO
+    proceso <- inicio
+    encontrado <- Falso
+
+    MIENTRAS proceso != NULO Y NO encontrado HACER
+        SI proceso.id = id ENTONCES
+            encontrado <- Verdadero
+        SINO
+            proceso <- proceso.siguiente
+        FIN SI
+    FIN MIENTRAS
+
+    SI NO encontrado ENTONCES
+        ESCRIBIR "Proceso no registrado."
+        RETORNAR
+    FIN SI
+
+    ocupada <- 0
+    asignado <- Falso
+    actual <- tope
+
+    MIENTRAS actual != NULO HACER
+        ocupada <- ocupada + actual.tamano
+
+        SI actual.id = id ENTONCES
+            asignado <- Verdadero
+        FIN SI
+
+        actual <- actual.siguiente
+    FIN MIENTRAS
+
+    SI asignado ENTONCES
+        ESCRIBIR "El proceso ya tiene memoria asignada."
+        RETORNAR
+    FIN SI
+
+    SI proceso.memoria <= 0 ENTONCES
+        ESCRIBIR "Tamaño de memoria inválido."
+        RETORNAR
+    FIN SI
+
+    SI ocupada + proceso.memoria > capacidad ENTONCES
+        ESCRIBIR "Memoria insuficiente."
+        RETORNAR
+    FIN SI
+
+    nuevo <- NUEVO NodoMemoria
+    nuevo.id <- proceso.id
+    nuevo.tamano <- proceso.memoria
+    nuevo.siguiente <- tope
+    tope <- nuevo
+
+    ocupada <- ocupada + nuevo.tamano
+
+    ESCRIBIR "Memoria asignada correctamente."
+    ESCRIBIR "Memoria libre: ", capacidad - ocupada, " MB."
+FIN ALGORITMO

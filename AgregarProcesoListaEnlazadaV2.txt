@@ -1,0 +1,58 @@
+ALGORITMO AgregarProceso(
+    POR REFERENCIA inicio: Puntero a NodoProceso,
+    id: Entero,
+    nombre: Cadena,
+    prioridad: Cadena,
+    memoria: Entero
+)
+VARIABLES
+    nuevo, actual: Puntero a NodoProceso
+    repetido: Lógico
+
+INICIO
+    SI id <= 0 O nombre = "" O memoria <= 0 ENTONCES
+        ESCRIBIR "Datos inválidos."
+        RETORNAR
+    FIN SI
+
+    SI prioridad != "Alta" Y prioridad != "Media"
+       Y prioridad != "Baja" ENTONCES
+        ESCRIBIR "Prioridad inválida."
+        RETORNAR
+    FIN SI
+
+    repetido <- Falso
+    actual <- inicio
+
+    MIENTRAS actual != NULO HACER
+        SI actual.id = id ENTONCES
+            repetido <- Verdadero
+        FIN SI
+        actual <- actual.siguiente
+    FIN MIENTRAS
+
+    SI repetido ENTONCES
+        ESCRIBIR "El ID ya está registrado."
+        RETORNAR
+    FIN SI
+
+    nuevo <- NUEVO NodoProceso
+    nuevo.id <- id
+    nuevo.nombre <- nombre
+    nuevo.prioridad <- prioridad
+    nuevo.memoria <- memoria
+    nuevo.estado <- "Listo"
+    nuevo.siguiente <- NULO
+
+    SI inicio = NULO ENTONCES
+        inicio <- nuevo
+    SINO
+        actual <- inicio
+        MIENTRAS actual.siguiente != NULO HACER
+            actual <- actual.siguiente
+        FIN MIENTRAS
+        actual.siguiente <- nuevo
+    FIN SI
+
+    ESCRIBIR "Proceso registrado correctamente."
+FIN ALGORITMO

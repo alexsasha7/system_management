@@ -1,0 +1,74 @@
+ALGORITMO EncolarPorPrioridad(
+    inicio: Puntero a NodoProceso,
+    POR REFERENCIA frente: Puntero a NodoCola,
+    id: Entero
+)
+VARIABLES
+    proceso: Puntero a NodoProceso
+    nuevo, actual, anterior: Puntero a NodoCola
+    encontrado, duplicado, mayorPrioridad: Lógico
+
+INICIO
+    proceso <- inicio
+    encontrado <- Falso
+
+    MIENTRAS proceso != NULO Y NO encontrado HACER
+        SI proceso.id = id ENTONCES
+            encontrado <- Verdadero
+        SINO
+            proceso <- proceso.siguiente
+        FIN SI
+    FIN MIENTRAS
+
+    SI NO encontrado ENTONCES
+        ESCRIBIR "Proceso no registrado."
+        RETORNAR
+    FIN SI
+
+    duplicado <- Falso
+    actual <- frente
+
+    MIENTRAS actual != NULO HACER
+        SI actual.id = id ENTONCES
+            duplicado <- Verdadero
+        FIN SI
+        actual <- actual.siguiente
+    FIN MIENTRAS
+
+    SI duplicado ENTONCES
+        ESCRIBIR "El proceso ya está en la cola."
+        RETORNAR
+    FIN SI
+
+    nuevo <- NUEVO NodoCola
+    nuevo.id <- proceso.id
+    nuevo.prioridad <- proceso.prioridad
+    nuevo.siguiente <- NULO
+
+    anterior <- NULO
+    actual <- frente
+    mayorPrioridad <- Falso
+
+    MIENTRAS actual != NULO Y NO mayorPrioridad HACER
+        mayorPrioridad <-
+            (nuevo.prioridad = "Alta" Y actual.prioridad != "Alta")
+            O (nuevo.prioridad = "Media" Y actual.prioridad = "Baja")
+
+        SI NO mayorPrioridad ENTONCES
+            anterior <- actual
+            actual <- actual.siguiente
+        FIN SI
+    FIN MIENTRAS
+
+    nuevo.siguiente <- actual
+
+    SI anterior = NULO ENTONCES
+        frente <- nuevo
+    SINO
+        anterior.siguiente <- nuevo
+    FIN SI
+
+    proceso.estado <- "En espera"
+
+    ESCRIBIR "Proceso encolado correctamente."
+FIN ALGORITMO
